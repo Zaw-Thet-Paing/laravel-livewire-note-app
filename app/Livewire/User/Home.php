@@ -3,17 +3,12 @@
 namespace App\Livewire\User;
 
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Home extends Component
 {
 
-    public function userLogout()
-    {
-        Auth::logout();
-
-        $this->redirect(route('login'), navigate:true);
-    }
 
     public function render()
     {

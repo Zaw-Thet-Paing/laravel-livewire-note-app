@@ -31,7 +31,7 @@
                                     <label for="">Password : </label>
                                     <div class="input-group">
                                         <input :type="passwordStatus ? 'text' : 'password'" wire:model="password" class="form-control @error('password') is-invalid @enderror">
-                                        <span class="input-group-text" x-on:click="passwordStatus = !passwordStatus">
+                                        <span class="input-group-text" x-on:click="passwordStatus = !passwordStatus" style="cursor: pointer">
                                             <i :class="passwordStatus ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"></i>
                                         </span>
                                     </div>

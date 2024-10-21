@@ -1,18 +1,14 @@
 <div>
     <div class="container mt-3">
         <div class="row me-3">
+
             <div class="col-2 p-2" style="height: 200px">
                 <div class="border rounded w-100 h-100 d-flex justify-content-center align-items-center" style="cursor: pointer" wire:click="addNewNote">
                     <i class="fa-solid fa-plus fs-1"></i>
                 </div>
             </div>
 
-            {{-- <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewNoteModal">
-                Launch demo modal
-            </button> --}}
-
-            <!-- Modal -->
+            <!-- Add New Note Modal -->
             <div class="modal fade" id="addNewNoteModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -33,20 +29,30 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">
+                                Save
+                                <div class="spinner-border spinner-border-sm" wire:loading wire:target="saveNewNote" role="status">
+                                </div>
+                            </button>
                         </div>
                     </form>
                 </div>
                 </div>
             </div>
 
-            {{-- @for ($i = 0; $i<10; $i++)
+            @foreach($notes as $note)
             <div class="col-2 p-2" style="height: 200px; cursor: pointer;">
-                <div class="border w-100 h-100">
-
+                <div class="border rounded w-100 h-100 p-2">
+                    {{ $note->title }}
+                    <hr>
+                    {{ substr($note->content, 0, 80) }}
+                    @if (strlen($note->content) >= 80)
+                    ...
+                    @endif
                 </div>
             </div>
-            @endfor --}}
+            @endforeach
+
         </div>
     </div>
 </div>

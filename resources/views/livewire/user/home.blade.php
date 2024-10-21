@@ -54,7 +54,7 @@
                         </div>
                         <div>
                             {{-- edit button --}}
-                            <i class="fa-solid fa-pen-to-square text-primary me-2" style="cursor: pointer"></i>
+                            <i class="fa-solid fa-pen-to-square text-primary me-2" wire:click="editNote({{ $note->id }})" style="cursor: pointer"></i>
                             {{-- delete button --}}
                             <i class="fa-solid fa-trash text-danger me-2" wire:click="deleteNote({{ $note->id }})" style="cursor: pointer"></i>
                         </div>
@@ -93,6 +93,38 @@
                 </div>
             </div>
 
+            <!-- Edit Note Modal -->
+            <div class="modal fade" id="editNoteModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Note</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form wire:submit.prevent="updateModal">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="">Title</label>
+                                <input type="text" wire:model="title" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Content</label>
+                                <textarea rows="12" wire:model="content" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">
+                                Update
+                                <div class="spinner-border spinner-border-sm" wire:loading wire:target="updateModal" role="status">
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -125,8 +157,13 @@
         let modal = new bootstrap.Modal(document.getElementById('seeMoreNoteModal'));
         modal.show();
     });
-    window.addEventListener('cloe-seemore-note', event => {
-        let modal = document.getElementById('seeMoreNoteModal');
+
+    $wire.on('edit-note', event => {
+        let modal = new bootstrap.Modal(document.getElementById('editNoteModal'));
+        modal.show();
+    });
+    $wire.on('close-edit-note', event => {
+        let modal = document.getElementById('editNoteModal');
         let modalInstance = bootstrap.Modal.getInstance(modal);
         modalInstance.hide();
     });

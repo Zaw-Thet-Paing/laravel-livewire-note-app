@@ -10,6 +10,7 @@ use Livewire\Component;
 class Home extends Component
 {
 
+    public $editId;
     public $title;
     public $content;
 
@@ -26,6 +27,7 @@ class Home extends Component
     // show create new note model
     public function addNewNote()
     {
+        $this->reset('title', 'content');
         $this->dispatch('add-new-note');
     }
 
@@ -65,6 +67,33 @@ class Home extends Component
         $note = Note::find($id);
 
         $this->dispatch('seemore-note', title: $note->title, content: $note->content);
+    }
+
+    // show edit note modal
+    public function editNote($id)
+    {
+        $note = Note::find($id);
+        $this->editId = $id;
+        $this->title = $note->title;
+        $this->content = $note->content;
+
+        $this->dispatch('edit-note');
+    }
+
+    // update note
+    public function updateModal()
+    {
+        $note = Note::find($this->editId);
+        $note->title = $this->title;
+        $note->content = $this->content;
+        $note->update();
+
+        $this->dispatch('close-edit-note');
+
+        $this->notes = Note::where('user_id', Auth::user()->id)->get();
+
+        $this->reset('editId', 'title', 'content');
+
     }
 
     public function render()

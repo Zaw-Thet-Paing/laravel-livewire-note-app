@@ -13,6 +13,9 @@ class Home extends Component
     public $title;
     public $content;
 
+    // public $noteTitle;
+    // public $noteContent;
+
     public $notes = [];
 
     public function mount()
@@ -20,12 +23,13 @@ class Home extends Component
         $this->notes = Note::where('user_id', Auth::user()->id)->get();
     }
 
+    // show create new note model
     public function addNewNote()
     {
-        // dd("add new note");
         $this->dispatch('add-new-note');
     }
 
+    //create new note
     public function saveNewNote()
     {
         $this->validate([
@@ -43,6 +47,24 @@ class Home extends Component
         $this->reset('title', 'content');
 
         $this->dispatch('close-add-new-note');
+    }
+
+    // delete note
+    public function deleteNote($id)
+    {
+        $note = Note::find($id);
+        $note->delete();
+
+        $this->notes = Note::where('user_id', Auth::user()->id)->get();
+
+    }
+
+    // see more note
+    public function seeMoreNote($id)
+    {
+        $note = Note::find($id);
+
+        $this->dispatch('seemore-note', title: $note->title, content: $note->content);
     }
 
     public function render()
